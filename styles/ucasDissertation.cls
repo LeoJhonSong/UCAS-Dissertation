@@ -1,15 +1,36 @@
 % ucasDissertation文档类
+
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{styles/ucasDissertation}[中国科学院大学硕博学位论文LaTEx模板]
+\ProvidesClass{styles/ucasDissertation}[中国科学院大学硕博学位论文LaTeX模板]
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 解析选项
 \RequirePackage{keyval}
+\RequirePackage{kvoptions} % 用于解析具名选项
+\SetupKeyvalOptions{
+    family = UCAS,
+    prefix = UCAS@,
+}
+
 \newif\ifUCAS@print % 按印刷要求还是为pdf去掉前言的空白页, 默认为false
 \DeclareOption{print}{\UCAS@printtrue}
+\DeclareOption{draft}{
+    \special{xdvipdfmx:config z 0} % 将pdf压缩等级设为0, 缩短生成时间 (但会导致pdf更大)
+    \PassOptionsToClass{draft}{ctexbook}
+}
+\DeclareStringOption{ref}
+\DeclareStringOption{sym}
+\DeclareStringOption{abbr}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexbook}} % 将所有未知选项传递给ctexbook类
 \ProcessOptions\relax % 执行上面为每个选项定义的代码
 
+\ifUCAS@print
+    \PassOptionsToClass{openright}{ctexbook} % 印刷及装订要求中要求另页右页
+\else
+    \PassOptionsToClass{openany}{ctexbook} % 给book类传递openany选项, 章节不强制 (右页) 奇数页开始
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 0. 纸张要求和页面设置
 
 % 把使用fontspec的Script=CJK选项导致的no-script警告 (warning) 重定向为信息 (info), 抑制如下警告 (需在加载ctexbook类前).
 % Font "FandolSong-Regular" does not contain requested
@@ -34,16 +55,21 @@
 \newfontscript{CJK}{hani}
 \ExplSyntaxOff
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% 0. 纸张要求和页面设置
 \LoadClass[
     scheme = plain, % ctex宏包仅用于提供中文支持, 不对文章排版进行任何修改
     zihao = -4, % 设置文档字号为小四, 也就是12bp. 见ctex文档表: 标准字体命令与字号的对应
     autoindent = true, % 段首缩进2汉字符
     linespread = 1.25, % 1.25倍行距
-    % openany, % 章节不强制 (右页) 奇数页开始 !印刷要求另页右页
-    % draft, % 指定为草稿模式, 会进行简化使生成更快, 在断行不良/溢出出加黑色方块给出提示
 ]{ctexbook}
+
+% 汉化
+\ctexset{
+    contentsname = {目\quad 录},
+    listfigurename = {图目录},
+    listtablename = {表目录},
+    appendixname = {附录},
+    bibname = {参考文献},
+}
 
 % 页面设置 ---------------------------------------------------------------------
 \RequirePackage[
@@ -65,9 +91,10 @@
     headsep=0.53cm, % 页眉与正文间距
     footskip=1.04cm, % 页脚底端距离= bottom - footskip
 }
+
 \RequirePackage{fancyhdr}
 \pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{\markboth{\UCAS@header@cn}{\CTEXifname{\CTEXthechapter}{}\quad#1}}
+\renewcommand{\chaptermark}[1]{\markboth{\UCAS@title@cn}{\CTEXifname{\CTEXthechapter}{}\quad#1}} % 每到新的章节更新左右mark
 \renewcommand{\sectionmark}[1]{\empty}
 
 % 正文页眉页脚样式
@@ -77,6 +104,7 @@
     \fancyhead[CE]{\songti\zihao{-5}\leftmark} % 偶数页页眉为论文题目, 宋体小五
     \fancyfoot[LE, RO]{\zihao{-5}\thepage}
 }
+
 % 前言页码样式
 \fancypagestyle{frontmatter}[mainmatter]{
     \fancyfoot{}
@@ -84,47 +112,28 @@
 }
 
 % 默认字体 ---------------------------------------------------------------------
+% ctex默认衬线字体为宋体, 无衬线字体 (\sffamily) 为黑体
 \RequirePackage{fontspec}
 \setmainfont{Times New Roman} % 设置英文及阿拉伯数字字体
-% ctex默认衬线字体为宋体, 无衬线字体 (\sffamily) 为黑体
 
 % 按文档结构设置样式 ------------------------------------------------------------
-\let\oldfrontmatter\frontmatter
 \renewcommand{\frontmatter}{
-    \oldfrontmatter % 小写罗马数字页码, 章节不编号但计入目录
-    \pagenumbering{Roman} % 用大写罗马数字
+    \@mainmatterfalse % 导致章节不编号但计入目录
+    \pagenumbering{Roman} % 大写罗马数字页码
     \pagestyle{frontmatter}
     \ctexset{chapter/pagestyle = frontmatter} % 章节页眉页脚样式
 }
 
-\let\oldmainmatter\mainmatter
 \renewcommand{\mainmatter}{
-    \oldmainmatter % 重置页码, 阿拉伯数字页码
-    \pagenumbering{arabic}
+    \@mainmattertrue
+    \pagenumbering{arabic} % 切换为阿拉伯数字页码, 由其他数字切换会导致页码重置
     \pagestyle{mainmatter}
     \ctexset{chapter/pagestyle = mainmatter} % 章节页眉页脚样式
 }
-
-% 汉化 -------------------------------------------------------------------------
-\ctexset{
-    contentsname = {目\quad 录},
-    listfigurename = {图目录},
-    listtablename = {表目录},
-    appendixname = {附录},
-    bibname = {参考文献},
-}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% (二) 封面
-\renewcommand{\title}[2]{
-    \newcommand{\UCAS@title@cn}{#1}
-    \newcommand{\UCAS@title@en}{#2}
-    \newcommand{\UCAS@header@cn}{#1}
-    \newcommand{\UCAS@header@en}{#2}
-}
-\newcommand{\header}[2]{
-    \ifx&#1&\else\renewcommand{\UCAS@header@cn}{#1}\fi % 如果 #1 不为空，给 \UCAS@header@cn 赋值
-    \ifx&#2&\else\renewcommand{\UCAS@header@en}{#2}\fi % 如果 #2 不为空，给 \UCAS@header@en 赋值
-}
+% 1. 封面
+
+% 封面信息变量设置命令 -----------------------------------------------------------
 \newcommand{\degree}[1]{
     \ifthenelse{\equal{#1}{硕士}}{
         \newcommand{\UCAS@degree@cn}{硕士}
@@ -136,31 +145,25 @@
         \newcommand{\UCAS@articleType}{dissertation}
     }
 }
-\newcommand{\setterFactory}[1]{
-    \expandafter\edef\csname #1\endcsname##1##2{
-        \expandafter\edef\csname UCAS@#1@cn\endcsname{##1}
-        \expandafter\edef\csname UCAS@#1@en\endcsname{##2}
-    }
-}
-\forcsvlist{\setterFactory}{author, degreeType, subject, institute, date} % 定义\title, \author等命令
 \newcommand{\supervisor}[3]{
     \newcommand{\UCAS@supervisor@cn}{#1}
     \newcommand{\UCAS@supervisor@en}{#2}
     \newcommand{\UCAS@supervisor@institute}{#3}
 }
 
-\RequirePackage{contour} % 给字体绘制轮廓, 以解决下划线与下划线上文字重叠的问题
-\RequirePackage[normalem]{ulem} % 支持复杂内容的下划线\uline{}
-
-\ExplSyntaxOn
-\newcommand{\contouredUline}[1]{ % 没能做到对有轮廓的文本的自动换行支持, 换行需要手动用\\给出
-    \seq_set_split:Nnn \l_tmpa_seq { \\ } { #1 } % 分割文本
-    \contourlength{0.8pt}
-    \seq_map_inline:Nn \l_tmpa_seq { % 遍历每一行
-        \uline{\contour{white}{##1}} \\ % 在每一行上应用 \uline{\contour{white}{...}}
+\newcommand{\setterFactory}[1]{
+    \expandafter\edef\csname #1\endcsname##1##2{
+        \expandafter\def\csname UCAS@#1@cn\endcsname{##1}
+        \expandafter\def\csname UCAS@#1@en\endcsname{##2}
     }
 }
-\ExplSyntaxOff
+\forcsvlist{\setterFactory}{title, author, degreeType, subject, institute, date} % 定义\title, \author等命令
+
+
+% 增强下划线样式 ----------------------------------------------------------------
+\RequirePackage[normalem]{ulem} % 支持复杂内容的下划线\uline{}
+\RequirePackage{xeCJKfntef} % 修复uline, 支持中文自动折行
+
 \newcommand{\cnTitleUline}[1]{ % 增大了下划线与文字间距离, 加粗下划线
     \renewcommand{\ULthickness}{1.8pt}
     \setlength{\ULdepth}{0.5em}
@@ -168,13 +171,15 @@
     \renewcommand{\ULthickness}{1pt}
 }
 \newcommand{\enTitleUline}[1]{
-    \renewcommand{\ULthickness}{2.2pt}
-    \expandafter\contouredUline\expandafter{#1}
+    \renewcommand{\ULthickness}{1.8pt}
+    \setlength{\ULdepth}{0.4em}
+    \expandafter\uline\expandafter{#1} % 修复uline对含可折行字符的文本无法自动折行问题
     \renewcommand{\ULthickness}{1pt}
 }
 \newcommand{\expandedUline}[1]{\renewcommand{\ULthickness}{1pt}\uline{\hfill #1\hfill}}
 
-\newcommand{\makeCover@cn}{ % 中文封面
+% 中文封面 ---------------------------------------------------------------------
+\newcommand{\makeCover@cn}{
     \pagestyle{empty} % 首页无页眉页脚
     \begin{center}
         \vspace*{36pt}
@@ -202,13 +207,13 @@
     \end{center}
 }
 
-\newcommand{\makeCover@en}{ % 英文封面
+% 英文封面 ---------------------------------------------------------------------
+\newcommand{\makeCover@en}{
     \pagestyle{empty}
     \begin{center}
         \vspace*{58pt}
-        \renewcommand{\ULthickness}{1.8pt}
-        \begin{spacing}{1}{\zihao{-3}\textbf{\enTitleUline{\UCAS@title@en}}}\end{spacing}
-        \renewcommand{\ULthickness}{1pt}
+        % 由于下划线位置较低, 设置1.3倍行距, 在标题有多行时上下看着不会太挤
+        \begin{spacing}{1.3}{\zihao{-3}\textbf{\enTitleUline{\UCAS@title@en}}}\end{spacing}
 
         \vspace{80pt}
 
@@ -223,21 +228,22 @@
             By\\
             \UCAS@author@en\\
             Supervisor:\quad\UCAS@supervisor@en\\
-            \vspace{75pt}
+            \vspace{73pt}
             \UCAS@institute@en\\
             \UCAS@date@en
         \end{spacing}
     \end{center}
 }
 
-\newcommand{\makeCover}{ % 中国科学院大学规定的统一中英文封面
+% 中国科学院大学规定的统一中英文封面 ----------------------------------------------
+\newcommand{\makeCover}{
     \makeCover@cn
     \ifUCAS@print\cleardoublepage\else\clearpage\fi
     \makeCover@en
     \global\let\makeCover\relax % 销毁该命令, 防止重复调用
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% (二) 原创性声明及授权使用声明
+% 2. 原创性声明及授权使用声明
 \newcommand{\makeDeclaration}{
     \ifUCAS@print\cleardoublepage\else\clearpage\fi
     \pagestyle{empty}
@@ -283,10 +289,10 @@
     \global\let\makeDeclaration\relax % 销毁该命令, 防止重复调用
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% (三) 书脊
+% 3. 书脊
 % TODO
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% (四) 摘要和关键词
+% 4. 摘要和关键词
 \newcommand{\abstract}[2]{
     \newcommand{\UCAS@abstract@cn}{#1}
     \newcommand{\UCAS@abstract@en}{#2}
@@ -298,7 +304,7 @@
 \newcommand{\makeAbstract}{
     \currentpdfbookmark{摘要}{摘要} % 添加pdf书签. 前一个参数是书签名, 后一个是内部标识
     \chapter*{
-        \markboth{\UCAS@header@cn}{摘\quad 要} % 左右mark都设置为章节名, 使其出现在页眉
+        \markboth{\UCAS@title@cn}{摘\quad 要} % 左右mark都设置为章节名, 使其出现在页眉
         摘\quad 要
     }
     \UCAS@abstract@cn\par
@@ -307,7 +313,7 @@
 
     \currentpdfbookmark{Abstract}{Abstract}
     \chapter*{
-        \markboth{\UCAS@header@en}{Abstract}
+        \markboth{\UCAS@title@en}{Abstract}
         Abstract
     }
     \UCAS@abstract@en\par
@@ -317,11 +323,17 @@
     \global\let\makeAbstract\relax % 销毁该命令, 防止重复调用
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% (五) 目录
+% 5. 目录
+
+% 设置目录项样式 ----------------------------------------------------------------
 \RequirePackage[
     titles % 目录, 图表目录的标题以LaTeX默认方法排版, 此处为\ctexset设置的章节标题的样式
-]{tocloft}
+]{tocloft} % 用于自定义目录样式
+\renewcommand{\cftdot}{\ensuremath{\cdot}} % 目录中间的点用居中的
+\renewcommand{\@dotsep}{1} % 目录中间的点的间距
+\renewcommand{\cftdotsep}{\@dotsep}
 % 章目录
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}} % 强制章节名与页码间也是点
 \setlength{\cftbeforechapskip}{6pt} % 段前距
 \renewcommand{\cftchapfont}{\heiti\zihao{4}\linespread{1.0}} % 黑体四号单倍行距
 % 二级标题目录
@@ -345,7 +357,7 @@
     \ifUCAS@print\cleardoublepage\else\clearpage\fi
     \currentpdfbookmark{目录}{目录}
     \oldtableofcontents
-    \markboth{\UCAS@header@cn}{} % 修改目录命令中设定的左页眉
+    \markboth{\UCAS@title@cn}{} % 修改目录命令中设定的左页眉
 }
 % 四种材料的目录和为\listofmaterials命令
 \define@key{listofmaterials}{table}[true]{\def\listTable{#1}}
@@ -362,7 +374,7 @@
 
     \ifUCAS@print\cleardoublepage\else\clearpage\fi
     \ctexset{chapter/break={}} % 下面几个章节不另起一页
-    \markboth{\UCAS@header@cn}{图表目录}
+    \markboth{\UCAS@title@cn}{图表目录}
     \currentpdfbookmark{图表目录}{图表目录}
     \let\oldmarkboth\@mkboth
     \renewcommand{\@mkboth}[2]{}
@@ -378,13 +390,14 @@
 }
 % 改\printunsrtglossary
 \newcommand{\listofnotaions}{
-  \ifUCAS@print\cleardoublepage\else\clearpage\fi
-  \printunsrtglossary[style = indexgroup, title = {术语表}]
-  \markboth{\UCAS@header@cn}{}
+    \currentpdfbookmark{术语表}{术语表}
+    \printunsrtglossary[style = indexgroup, title = {术语表}]
+    \markboth{\UCAS@title@cn}{}
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% (六) 正文
-% 标题 -------------------------------------------------------------------------
+% 6. 正文
+
+% 各级文本样式 ------------------------------------------------------------------
 \ctexset{
     chapter = { % 章标题
       name={第,章},
@@ -427,7 +440,7 @@
             fixskip = true,
             afterindent = true,
         },
-    paragraph/afterindent = true,
+    paragraph/afterindent = true, % 段首缩进
     subparagraph/afterindent = true,
     appendix = {
             name = {附录},
@@ -440,10 +453,11 @@
 
 %列表 --------------------------------------------------------------------------
 \RequirePackage{enumitem}
-% TODO: 这俩有用吗
-% \setlist[enumerate]{wide=\parindent}
-% \setlist[itemize]{wide=\parindent}
-\setlist{nosep} % 列表上下及列表项间无额外间距
+% 设置有序/无序列表的标签左对齐, 与段首缩进一致
+\setlist[enumerate]{wide=\parindent}
+\setlist[itemize]{wide=\parindent}
+% 列表上下及列表项间无额外间距
+\setlist{nosep}
 
 % 图 ---------------------------------------------------------------------------
 \RequirePackage{graphicx}
@@ -467,39 +481,17 @@
 \DeclareCaptionFormat{en}{\zihao{5}\bfseries\linespread{1.25}#1#2#3\vspace{12pt}\par} % 英文图/表题样式: Times New Roman五号加粗1.25倍行距, 段前6pt段后0pt
 \captionsetup[bi-first]{format=cn}
 \captionsetup[bi-second]{format=en}
-\captionsetup[figure][bi-first]{
-    name={图},
-}
-\captionsetup[table][bi-first]{
-    name={表},
-}
+\captionsetup[figure][bi-first]{name={图}}
+\captionsetup[table][bi-first]{name={表}}
 \renewcommand{\thefigure}{\thechapter-\arabic{figure}} % 图序号样式: 章节-序号
 \renewcommand{\thetable}{\thechapter-\arabic{table}}
+
 % 表达式 (公式) -----------------------------------------------------------------
 \RequirePackage{amsmath}
 \renewcommand{\theequation}{\thechapter-\arabic{equation}}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% (七) 其他
 
-% 参考文献 ----------------------------------------------------------------------
-\RequirePackage[
-    backend = biber,
-    backref = true,
-    maxbibnames = 3,
-    style = gb7714-2015, % chktex 8 % biblatex-gb7714-2015宏包提供的顺序编码制
-    citestyle = gb7714-2015, % chktex 8
-    gbnamefmt=lowercase, % 对于bib文件中的作者姓名的大小写不做改变
-    gbpub=false % 放弃国标的要求, 不使用"出版地不详"等补充信息
-]{biblatex} % TODO: 检查样式是否完全一样, 中英文好像要显示不一样
-\addbibresource{bibs/References.bib}
-
-% 附录 -------------------------------------------------------------------------
-\let\oldappendix\appendix
-\renewcommand{\appendix}{
-    \oldappendix
-    \fancyhead[CO]{\songti\zihao{-5}附\quad 录} % 附录部分页眉为"附录", 两字间空一个汉字符
-}
-% 致谢 -------------------------------------------------------------------------
+% 代码环境 ---------------------------------------------------------------------
+% TODO
 
 % 算法环境 ---------------------------------------------------------------------
 \RequirePackage[
@@ -510,22 +502,38 @@
 \renewcommand{\ALG@name}{算法}
 \makeatother
 \renewcommand{\listalgorithmname}{算法目录}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 7. 其他
+
+% 参考文献 ----------------------------------------------------------------------
+\RequirePackage[
+    backend = biber,
+    backref = true,
+    maxbibnames = 3,
+    style = gb7714-2015, % chktex 8 % biblatex-gb7714-2015宏包提供的顺序编码制
+    citestyle = gb7714-2015, % chktex 8
+    gbnamefmt=lowercase, % 对于bib文件中的作者姓名的大小写不做改变
+    gbpub=false % 放弃国标的要求, 不使用"出版地不详"等补充信息
+]{biblatex}
+\makeatletter
+\addbibresource{\UCAS@ref}
+\makeatother
+
+% 附录 -------------------------------------------------------------------------
+\let\oldappendix\appendix
+\renewcommand{\appendix}{
+    \oldappendix
+    \fancyhead[CO]{\songti\zihao{-5}附\quad 录} % 附录部分页眉为"附录" (没有编号), 两字间空一个汉字符
+}
 
 % 超链接, pdf元信息及pdf书签 ----------------------------------------------------
 \RequirePackage[
     colorlinks = true,
     % linkcolor=blue,anchorcolor=violet,citecolor=magenta
     pdfstartview = FitH,
-    % TODO: 这些参数要确认
-    % pdfencoding=auto,% allows non-Latin based languages in bookmarks
-    % psdextra=true,% extra support for math symbols in bookmarks
     bookmarks = true, % 创建pdf书签
     bookmarksopen = true, % 默认显示书签并展开所有级别
     bookmarksnumbered, % 书签名包含编号
-    % bookmarksnumbered=true,% put section numbers in bookmarks
-    % pdftitle={testtte},% title
-    % pdfauthor={\@author},% author
-    % pdfsubject={\@title},% subject
 ]{hyperref} % 为了不被其他宏包覆盖hyperref对LaTeX内部命令的修改, 尽可能将hyperref置于导言区最后
 
 % 符号说明 (术语表) -----------------------------------------------------------------------
@@ -534,8 +542,9 @@
     record, % 显示术语出现的页码
     toc=false, % 不添加到目录
 ]{glossaries-extra}
+\makeatletter
 \GlsXtrLoadResources[
-    src={bibs/symbols.bib},
+    src={\UCAS@sym},
     group={符号}, % set this as the group field
     category={symbol}, % set this as the category field
     sort={letter-case}, % sort according to character code
@@ -543,7 +552,7 @@
     break-at={none}
 ]
 \GlsXtrLoadResources[
-    src={bibs/abbreviations.bib},
+    src={\UCAS@abbr},
     group={缩写}
 ]
-
+\makeatother

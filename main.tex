@@ -1,5 +1,9 @@
 \documentclass[
+    ref=bibs/References.bib,
+    sym=bibs/symbols.bib,
+    abbr=bibs/abbreviations.bib,
     print,
+    % draft, % 指定为草稿模式, 会进行简化使生成更快, 在断行不良/溢出出加黑色方块给出提示
 ]{styles/ucasDissertation}
 
 \begin{document}
@@ -10,7 +14,7 @@
 \makeDeclaration
 \frontmatter
 % 摘要
-\include{front/abstract.tex}
+\input{front/abstract.tex}
 % 目录
 \tableofcontents
 % 图表目录
@@ -32,8 +36,10 @@
 \include{appendices/appendix1.tex}
 \include{appendices/appendix2.tex}
 % ------------------------------------------------------------------------------
-\backmatter{} % 切换到章节不编号但计入目录状态
+\backmatter % 切换到章节不编号但计入目录状态
 % 致谢
+\include{backmatter/acknowledgements.tex}
 % 作者简历及攻读学位期间发表的学术论文与其他相关学术成果
+\include{backmatter/cv.tex}
 
 \end{document}
