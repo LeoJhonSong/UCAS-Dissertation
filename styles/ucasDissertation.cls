@@ -360,16 +360,19 @@
     \markboth{\UCAS@title@cn}{} % 修改目录命令中设定的左页眉
 }
 % 四种材料的目录和为\listofmaterials命令
+\RequirePackage{keyval}
 \define@key{listofmaterials}{table}[true]{\def\listTable{#1}}
 \define@key{listofmaterials}{figure}[true]{\def\listFigure{#1}}
-\define@key{listofmaterials}{code}[true]{\def\listCode{#1}}
 \define@key{listofmaterials}{algorithm}[true]{\def\listAlgorithm{#1}}
-\newcommand{\listofmaterials}[1][]{ % 图表目录, 列出图, 表, 代码, 算法
+\define@key{listofmaterials}{code}[true]{\def\listCode{#1}}
+\newcommand{\listofmaterials}[1][]{ % 图表目录, 列出图, 表, 算法, 代码
+    \SetupFloatingEnvironment{listing}{listname=代码目录}
+    \renewcommand{\listalgorithmname}{算法目录}
     % 处理选项
     \def\listTable{false}
     \def\listFigure{false}
-    \def\listCode{false}
     \def\listAlgorithm{false}
+    \def\listCode{false}
     \setkeys{listofmaterials}{#1}
 
     \ifUCAS@print\cleardoublepage\else\clearpage\fi
@@ -381,8 +384,8 @@
 
     \ifthenelse{\equal{\listFigure}{true}}{\listoffigures}{}
     \ifthenelse{\equal{\listTable}{true}}{\listoftables}{}
-    \ifthenelse{\equal{\listCode}{true}}{\listoflistings}{}
     \ifthenelse{\equal{\listAlgorithm}{true}}{\listofalgorithms}{}
+    \ifthenelse{\equal{\listCode}{true}}{\listoflistings}{}
 
     \ctexset{chapter/break=\if@openright\cleardoublepage\else\clearpage\fi}
     \let\@mkboth\oldmarkboth
@@ -471,7 +474,30 @@
 \RequirePackage{booktabs}
 % TODO: 表的样式, 封装图表命令
 
-% 图/表序, 题, 注 ---------------------------------------------------------------
+% 表达式 (公式) -----------------------------------------------------------------
+\RequirePackage{amsmath}
+
+% 算法环境 ---------------------------------------------------------------------
+\RequirePackage{algorithm}
+\RequirePackage{algorithmic}
+
+% 代码环境 ---------------------------------------------------------------------
+\RequirePackage[svgnames]{xcolor}
+\RequirePackage[
+    outputdir=build,
+    cachedir=minted_cache,
+    newfloat,
+]{minted}
+\setminted{
+    breaklines,
+    linenos,
+    fontsize=\footnotesize,
+    frame=single,
+}
+\let\oldmint\mint
+\renewcommand{\mint}[3][]{\oldmint[frame=none,linenos=false,#1]{#2}{#3}}
+
+% 题注 ---------------------------------------------------------------
 \RequirePackage[list=off]{bicaption} % 图表目录中仅显示第一语言的标题
 \captionsetup{
     labelsep=quad, % 图/表序与图/表题文字之间空一个汉字符
@@ -483,25 +509,19 @@
 \captionsetup[bi-second]{format=en}
 \captionsetup[figure][bi-first]{name={图}}
 \captionsetup[table][bi-first]{name={表}}
+\captionsetup[listing][bi-first]{name={代码}}
+\captionsetup[listing][bi-second]{name={Code}}
 \renewcommand{\thefigure}{\thechapter-\arabic{figure}} % 图序号样式: 章节-序号
 \renewcommand{\thetable}{\thechapter-\arabic{table}}
-
-% 表达式 (公式) -----------------------------------------------------------------
-\RequirePackage{amsmath}
 \renewcommand{\theequation}{\thechapter-\arabic{equation}}
+\renewcommand{\thealgorithm}{\thechapter-\arabic{algorithm}}
+% \SetupFloatingEnvironment{listing}{within=none} % 代码环境不随章节编号
 
-% 代码环境 ---------------------------------------------------------------------
-% TODO
-
-% 算法环境 ---------------------------------------------------------------------
-\RequirePackage[
-    % chapter % 算法编号包含章节号
-]{algorithm}
-\RequirePackage{algorithmic}
-\makeatletter
-\renewcommand{\ALG@name}{算法}
-\makeatother
-\renewcommand{\listalgorithmname}{算法目录}
+\newcommand{\figureautorefname}{图}
+\newcommand{\tableautorefname}{表}
+\newcommand{\AMSautorefname}{公式}
+\newcommand{\listingautorefname}{代码}
+\makeatletter\renewcommand{\ALG@name}{算法}\makeatother
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 7. 其他
 

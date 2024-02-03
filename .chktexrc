@@ -2,4 +2,5 @@ CmdLine {
     --nowarn 1 # 关掉 1: Command terminated with space.
     --nowarn 8
     --nowarn 19
+    --nowarn 36
 }
