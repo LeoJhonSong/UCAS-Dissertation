@@ -1,44 +1,50 @@
 {
-    "cSpell.words": [
-        "aftername",
-        "afterskip",
-        "appendixname",
-        "beforeskip",
-        "bfseries",
-        "bibname",
-        "ccwd",
-        "csname",
-        "ctex",
-        "ctexbook",
-        "ctexset",
-        "endcsname",
-        "expandafter",
-        "fancyfoot",
-        "fancyhead",
-        "fancyhf",
-        "fancypagestyle",
-        "Fandol",
-        "fixskip",
-        "fontspec",
-        "heiti",
-        "includegraphics",
-        "labelsep",
-        "listfigurename",
-        "listtablename",
-        "nameformat",
-        "newcommand",
-        "noindent",
-        "normalsize",
-        "songti",
-        "tabularx",
-        "textbf",
-        "textwidth",
-        "titleformat",
-        "UCAS",
-        "Uline",
-        "zihao"
+    "workbench.editorAssociations": {
+        "*.pdf": "latex-workshop-pdf-hook"
+    },
+    "path-autocomplete.triggerOutsideStrings": true,
+    "rewrap.wrappingColumn": 80,
+    "latex-workshop.message.error.show": false,
+    "latex-workshop.message.warning.show": false,
+    "latex-workshop.latex.autoBuild.run": "never",
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.view.pdf.invertMode.enabled": "auto",
+    "latex-workshop.view.pdf.invert": 0.85,
+    "latex-workshop.linting.chktex.enabled": true,
+    "latex-workshop.linting.chktex.exec.args": [
+        "-wall",
+        "-n1",
+        "-n8",
+        "-n19",
+        "-n22",
+        "-n30",
+        "-e16",
+        "-q"
     ],
-    "cSpell.enableFiletypes": [
-        "tex"
-    ]
+    "latex-workshop.bibtex-format.sort.enabled": true,
+    "latex-workshop.synctex.afterBuild.enabled": true,
+    "latex-workshop.latexindent.path": "latexindent",
+    "latex-workshop.latexindent.args": [
+        "-c",
+        "%DIR%/build/",
+        "%TMPFILE%",
+        "-y=defaultIndent: '%INDENT%'"
+    ],
+    "latex-workshop.latex.outDir": "%DIR%/build",
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": ["%DOC%"],
+        },
+    ],
+    "latex-workshop.latex.recipe.default": "lastUsed",
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk 🔃",
+            "tools": [
+                "latexmk"
+            ]
+        },
+    ],
 }
