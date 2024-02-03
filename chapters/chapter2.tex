@@ -58,19 +58,19 @@
 比如\autoref{fig:pngtest}
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/pngtest}
+    \includegraphics[width=0.5\textwidth]{pngtest}
     \bicaption{ucasthesis 图片测试}{ucasthesis figure test}\label{fig:pngtest}
 \end{figure}
 
 \subsection{表格}
 
-请见表~\ref{tab:sample}。
+请见\autoref{tab:sample}。
 \begin{table}[!htbp]
     \bicaption{这是一个样表}{This is a sample table}\label{tab:sample}
     \centering
     \footnotesize% fontsize
     \setlength{\tabcolsep}{4pt}% column separation
-    \renewcommand{\arraystretch}{1.2}%row space 
+    \renewcommand{\arraystretch}{1.2}%row space
     \begin{tabular}{lcccccccc}
         \toprule
         行号    & \multicolumn{8}{c}{跨多列的标题}                                           \\
@@ -99,6 +99,16 @@ zjsw}，关于杂志的\cite{ELIDRISSI94, MELLINGER96, SHELL02}，硕士论文\c
 献\cite{cnarticle}应增加 \texttt{lang=``zh''} 字段，以便进行相应处理。更多参考文
 献模板使用方法请参照参考文献模板作者说明
 \url{https://github.com/hushidong/biblatex-gb7714-2015}。
+
+\subsection{代码}
+
+代码可以是行内的, 如\mintinline{python3}{print('是字符串' if isinstance(aString, str) else '不是字符串')}, 可以是单行的:
+\mint{tex}{\inputminted[firstline=16, lastline=37]{c}{assets/example.c}}
+也可以是如下从指定文件指定范围插入的代码块\autoref{code:sample}。
+\begin{listing}[H]
+    \inputminted[firstline=16, lastline=37]{c}{assets/example.c}
+    \bicaption{这是一段示例代码}{A sample code}\label{code:sample}
+\end{listing}
 
 \subsection{算法}
 

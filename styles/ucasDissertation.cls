@@ -216,7 +216,7 @@
         \vspace{80pt}
 
         \begin{spacing}{2}
-            \bfseries\zihao{4}\centering
+            \bfseries\zihao{4}
             A \UCAS@articleType\ submitted to\\
             University of Chinese Academy of Sciences\\
             in partial fulfillment of the requirement\\
@@ -462,7 +462,7 @@
 
 % 图 ---------------------------------------------------------------------------
 \RequirePackage{graphicx}
-\graphicspath{{./figures}}
+\graphicspath{{assets}}
 % \RequirePackage{subcaption} % TODO: 子图?
 
 % 表 ---------------------------------------------------------------------------
@@ -543,6 +543,11 @@
     \oldappendix
     \fancyhead[CO]{\songti\zihao{-5}附\quad 录} % 附录部分页眉为"附录" (没有编号), 两字间空一个汉字符
 }
+
+% 致谢 -------------------------------------------------------------------------
+\makeatletter
+\newcommand{\acknowledgementsDate}{\par\noindent\hspace{24\ccwd}\UCAS@date@cn}
+\makeatother
 
 % 超链接, pdf元信息及pdf书签 ----------------------------------------------------
 \RequirePackage[
