@@ -5,24 +5,22 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 解析选项
-\RequirePackage{keyval}
-\RequirePackage{kvoptions} % 用于解析具名选项
+\RequirePackage{kvoptions}
 \SetupKeyvalOptions{
     family = UCAS,
     prefix = UCAS@,
+    setkeys=\kvsetkeys,
 }
-
-\newif\ifUCAS@print % 按印刷要求还是为pdf去掉前言的空白页, 默认为false
-\DeclareOption{print}{\UCAS@printtrue}
-\DeclareOption{draft}{
+\DeclareBoolOption[false]{print} % 印刷版/电子版 (电子版非另页右页, 仅另页), 默认为电子版
+\DeclareVoidOption{draft}{
     \special{xdvipdfmx:config z 0} % 将pdf压缩等级设为0, 缩短生成时间 (但会导致pdf更大)
     \PassOptionsToClass{draft}{ctexbook}
 }
 \DeclareStringOption{ref}
 \DeclareStringOption{sym}
 \DeclareStringOption{abbr}
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{ctexbook}} % 将所有未知选项传递给ctexbook类
-\ProcessOptions\relax % 执行上面为每个选项定义的代码
+\DeclareDefaultOption{\expandafter\PassOptionsToClass\expandafter{\CurrentOption}{ctexbook}} % 将所有未知选项传递给ctexbook类
+\ProcessKeyvalOptions*\relax % 执行上面为每个选项定义的代码
 
 \ifUCAS@print
     \PassOptionsToClass{openright}{ctexbook} % 印刷及装订要求中要求另页右页
