@@ -7,18 +7,6 @@
 应便于互相区别，如：图1-1（第1章第一个图）、图2-2（第2章第二个图）；表3-2（第3章
 第二个表）等。附录的图表参考正文的编号方式，如附图1-1或附表1-1。
 
-\subsection{页码}
-
-正文页码从绪论开始按阿拉伯数字（1，2，3……）连续编排，页码应位居左页左下角、右页
-右下角；正文前的部分（中英文摘要、目录等）用大写罗马数字（I，II，III…）单独编
-排，页码位于页面下方居中。
-
-\subsection{页眉}
-
-正文页码从绪论开始按阿拉伯数字（1，2，3……）连续编排，页码应位居左页左下角、右页
-右下角；正文前的部分（中英文摘要、目录等）用大写罗马数字（I，II，III…）单独编
-排，页码位于页面下方居中。
-
 \subsection{图和表}
 
 论文中若有图和表，应设置图表目录，先列图后列表，置于目录页后，另页编排。
@@ -65,15 +53,14 @@
 \subsection{表格}
 
 请见\autoref{tab:sample}。
-\begin{table}[!htbp]
+\begin{table}[htbp]
     \bicaption{这是一个样表}{This is a sample table}\label{tab:sample}
     \centering
-    \footnotesize% fontsize
     \setlength{\tabcolsep}{4pt}% column separation
     \renewcommand{\arraystretch}{1.2}%row space
     \begin{tabular}{lcccccccc}
         \toprule
-        行号    & \multicolumn{8}{c}{跨多列的标题}                                           \\
+        行号 & \multicolumn{8}{c}{跨多列的标题}\\
         %\cline{2-9}% partial hline from column i to column j
         \midrule
         Row 1 & 1 & 2 & 3 & 6 & 7 & 8 \\
@@ -89,7 +76,7 @@
 有符号: \gls{pi}, 有缩写: \gls{spi}, 都可以.
 
 \subsection{引用}
-本模板使用 Biber进行文献编译，基本符合2015国标的参考文献格式。默认情况下，按照国
+本模板使用biber进行文献编译，基本符合2015国标的参考文献格式。默认情况下，按照国
 科大的指导标准，使用数字顺序的引用方式没有严格限制，这也是最方便的引用途径。 如
 果您一定要使用作者年份制引用，请参照参考文献模板的说明进行使用。看看这个例子，关
 于书的\cite{tex, companion, ColdSources}，还有这些\cite{Krasnogor2004e, clzs,
