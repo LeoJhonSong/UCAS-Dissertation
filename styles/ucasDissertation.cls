@@ -3,6 +3,7 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{styles/ucasDissertation}[中国科学院大学硕博学位论文LaTeX模板]
 
+\RequirePackage{styles/ucasSilence} % 抑制字体相关的警告, 需要放在加载ctexbook前
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 解析选项
 \RequirePackage{kvoptions}
@@ -29,30 +30,6 @@
 \fi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 0. 纸张要求和页面设置
-
-% 把使用fontspec的Script=CJK选项导致的no-script警告 (warning) 重定向为信息 (info), 抑制如下警告 (需在加载ctexbook类前).
-% Font "FandolSong-Regular" does not contain requested
-% (fontspec)	Script "CJK".
-
-% fontspec包需要执行\normalsize命令, 但这个命令在\LoadClass{ctexbook}中的\LoadClass[book]中加载的size12.clo中才重定义
-% 为了在加载ctexbook前加载fontspec包, 在此重定义\normalsize (与size12.clo中定义一样)
-\renewcommand\normalsize{
-    \@setfontsize\normalsize\@xiipt{14.5}%
-    \abovedisplayskip 12\p@ \@plus3\p@ \@minus7\p@
-    \abovedisplayshortskip \z@ \@plus3\p@
-    \belowdisplayshortskip 6.5\p@ \@plus3.5\p@ \@minus3\p@
-    \belowdisplayskip \abovedisplayskip
-    \let\@listi\@listI}
-\RequirePackage{fontspec}
-\RequirePackage{xpatch}
-\ExplSyntaxOn
-\xpatchcmd \fontspec_new_script:nn
-{ \__fontspec_warning:nxx }
-{ \__fontspec_info:nxx }
-{}{\fail}
-\newfontscript{CJK}{hani}
-\ExplSyntaxOff
-
 \LoadClass[
     scheme = plain, % ctex宏包仅用于提供中文支持, 不对文章排版进行任何修改
     zihao = -4, % 设置文档字号为小四, 也就是12bp. 见ctex文档表: 标准字体命令与字号的对应
@@ -131,32 +108,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 1. 封面
 
-% 封面信息变量设置命令 -----------------------------------------------------------
-\newcommand{\degree}[1]{
-    \ifthenelse{\equal{#1}{硕士}}{
-        \newcommand{\UCAS@degree@cn}{硕士}
-        \newcommand{\UCAS@degree@en}{master}
-        \newcommand{\UCAS@articleType}{thesis}
-    }{
-        \newcommand{\UCAS@degree@cn}{博士}
-        \newcommand{\UCAS@degree@en}{doctor}
-        \newcommand{\UCAS@articleType}{dissertation}
-    }
-}
-\newcommand{\supervisor}[3]{
-    \newcommand{\UCAS@supervisor@cn}{#1}
-    \newcommand{\UCAS@supervisor@en}{#2}
-    \newcommand{\UCAS@supervisor@institute}{#3}
-}
-
-\newcommand{\setterFactory}[1]{
-    \expandafter\edef\csname #1\endcsname##1##2{
-        \expandafter\def\csname UCAS@#1@cn\endcsname{##1}
-        \expandafter\def\csname UCAS@#1@en\endcsname{##2}
-    }
-}
-\forcsvlist{\setterFactory}{title, author, degreeType, subject, institute, date} % 定义\title, \author等命令
-
+% 加载论文信息变量设置命令 -----------------------------------------------------------
+\RequirePackage{styles/ucasInfo}
 
 % 增强下划线样式 ----------------------------------------------------------------
 \RequirePackage[normalem]{ulem} % 支持复杂内容的下划线\uline{}
@@ -288,7 +241,7 @@
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 3. 书脊
-% TODO
+% 在ucasSpine.cls
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 4. 摘要和关键词
 \newcommand{\abstract}[2]{
