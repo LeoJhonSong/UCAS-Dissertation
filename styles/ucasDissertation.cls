@@ -407,9 +407,9 @@
 
 %列表 --------------------------------------------------------------------------
 \RequirePackage{enumitem}
-% 设置有序/无序列表的标签左对齐, 与段首缩进一致
-\setlist[enumerate]{wide=\parindent}
-\setlist[itemize]{wide=\parindent}
+% 设置有序/无序列表的标签左对齐, 与正文缩进一致
+\setlist[enumerate]{align=parleft, leftmargin=*}
+\setlist[itemize]{align=parleft, leftmargin=*}
 % 列表上下及列表项间无额外间距
 \setlist{nosep}
 
