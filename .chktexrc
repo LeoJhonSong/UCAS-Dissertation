@@ -3,4 +3,5 @@ CmdLine {
     --nowarn 8
     --nowarn 19
     --nowarn 36
+    --nowarn 46 # 关掉 46: Use \( ... \) instead of $ ... $.
 }

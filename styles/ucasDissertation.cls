@@ -419,15 +419,20 @@
 \setlist{nosep}
 
 % 图 ---------------------------------------------------------------------------
+\RequirePackage{float}
+\floatplacement{figure}{htbp} % 图的默认位置: 优先放在当前位置, 其次放在页面顶部, 再次放在页面底部, 最后放在单独一页
+\appto\figure{\centering} % 图居中
 \RequirePackage{graphicx}
 \graphicspath{{assets}}
-% \RequirePackage{subcaption} % TODO: 子图?
+\RequirePackage{subcaption} % 提供子图环境subfigure
 
 % 表 ---------------------------------------------------------------------------
+\floatplacement{table}{htbp}
+\appto\table{\centering} % 表居中
 % 行间距1.5倍 (得自word模板实现)
 % TODO: 卧排表顶左底右, 即表顶朝左
 \RequirePackage{tabularx}
-\RequirePackage{booktabs}
+\RequirePackage{booktabs} % 提供\toprule, \midrule, \bottomrule
 % TODO: 表的样式, 封装图表命令
 
 % 表达式 (公式) -----------------------------------------------------------------
