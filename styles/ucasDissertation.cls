@@ -409,12 +409,12 @@
 % 设置无序列表标签样式
 \renewcommand{\labelitemi}{\(\bullet\)}
 \renewcommand{\labelitemii}{\(\circ\)}
-\renewcommand{\labelitemiii}{\(\cdot\)}
-\renewcommand{\labelitemiv}{\(\cdot\)}
-% 设置有序/无序列表的标签左对齐, 与正文缩进一致
+\renewcommand{\labelitemiii}{\(\circ\)}
+\renewcommand{\labelitemiv}{\(\circ\)}
+% 设置有序/无序列表的标签左对齐, 与正文一致
 \RequirePackage{enumitem}
-\setlist[enumerate]{align=parleft, leftmargin=*}
-\setlist[itemize]{align=parleft, leftmargin=*}
+\setlist[enumerate]{leftmargin=3\ccwd}
+\setlist[itemize]{leftmargin=3\ccwd}
 % 列表上下及列表项间无额外间距
 \setlist{nosep}
 
