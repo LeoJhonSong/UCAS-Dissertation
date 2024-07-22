@@ -5,7 +5,7 @@
 
 ### 在线编辑
 
-将压缩包上传overleaf后在菜单中需将编译器选为`xelatex`
+将压缩包上传Overleaf或[中国科技云Overleaf](https://www.cstcloud.cn/resources/452) (无编译时间限制) 后在菜单中需将编译器选为`xelatex`
 
 ### 本地编辑
 

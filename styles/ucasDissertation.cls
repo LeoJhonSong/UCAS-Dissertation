@@ -437,6 +437,8 @@
 
 % 表达式 (公式) -----------------------------------------------------------------
 \RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{unicode-math}
 
 % 算法环境 ---------------------------------------------------------------------
 \RequirePackage{algorithm}
@@ -480,8 +482,9 @@
 
 \newcommand{\figureautorefname}{图}
 \newcommand{\tableautorefname}{表}
-\newcommand{\AMSautorefname}{公式}
-\newcommand{\listingautorefname}{代码}
+\newcommand{\equationautorefname}{公式}
+\renewcommand{\listingautorefname}{代码}
+\newcommand{\algorithmautorefname}{算法}
 \makeatletter\renewcommand{\ALG@name}{算法}\makeatother
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 7. 其他
