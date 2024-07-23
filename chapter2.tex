@@ -35,8 +35,8 @@
 
 \subsection{图片}
 
-比如\autoref{fig:pngtest}
-\begin{figure}[htbp]
+比如\autoref{fig:pngtest}. 注意模板中已经默认设置figure及table环境的位置参数为\verb|htbp|, 不能再单独设置.
+\begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{pngtest}
     \bicaption{ucasthesis 图片测试}{ucasthesis figure test}\label{fig:pngtest}
@@ -45,7 +45,7 @@
 \subsection{表格}
 
 请见\autoref{tab:sample}。
-\begin{table}[htbp]
+\begin{table}
     \bicaption{这是一个样表}{This is a sample table}\label{tab:sample}
     \centering
     \setlength{\tabcolsep}{4pt}% column separation
@@ -91,7 +91,7 @@ zjsw}，关于杂志的\cite{ELIDRISSI94, MELLINGER96, SHELL02}，硕士论文\c
 
 \subsection{算法}
 
-这有一个算法\ref{alg:alg1}
+这有一个\autoref{alg:alg1}
 
 \begin{algorithm}
     \caption{Calculate \(y = x^n$}\label{alg:alg1}

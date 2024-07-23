@@ -4,7 +4,9 @@ $pdf_mode = 5; # 用xelatex生成pdf
 # -interaction=nonstopmode 遇到错误时不等待用户输入而尽可能继续编译
 # -shell-escape 编译器调用外部程序
 # -file-line-error 编译器报告错误时给出文件名和行号而不是页码
-$xelatex = 'xelatex -synctex=1 -interaction=nonstopmode -file-line-error -shell-escape %O %S';
+# !如果build下缺少相应文件夹, 这样写本身是会编译失败的, 但LaTeX Workshop似乎会自动创建相应文件夹修复了这个问题
+# 见: https://tex.stackexchange.com/a/206986
+$xelatex = 'xelatex -synctex=1 -interaction=nonstopmode -file-line-error -shell-escape -output-directory=%O %S';
 $postscript_mode = $dvi_mode = 0;
 
 push @generated_exts, 'loa', 'bbl', 'run.xml', 'glstex', 'glg';
@@ -31,12 +33,12 @@ sub run_bib2gls {
     $LOG = "$_[0].glg";
     if (!$ret && -e $LOG) {
         open LOG, "<$LOG";
-	while (<LOG>) {
+        while (<LOG>) {
             if (/^Reading (.*\.bib)\s$/) {
-		rdb_ensure_file( $rule, $1 );
-	    }
-	}
-	close LOG;
+                rdb_ensure_file( $rule, $1 );
+            }
+        }
+	    close LOG;
     }
     return $ret;
 }

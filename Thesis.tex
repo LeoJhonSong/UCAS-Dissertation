@@ -17,7 +17,7 @@
 \makeDeclaration
 \frontmatter
 % 摘要
-\input{front/abstract.tex}
+\input{abstract.tex}
 % 目录
 \tableofcontents
 % 图表目录
@@ -31,19 +31,19 @@
 \listofnotaions
 % ------------------------------------------------------------------------------
 \mainmatter
-\include{chapters/chapter1.tex}
-\include{chapters/chapter2.tex}
+\include{chapter1.tex}
+\include{chapter2.tex}
 % 参考文献
 \printbibliography[heading = bibintoc]
 % 附录
 \appendix
-\include{appendices/appendix1.tex}
-\include{appendices/appendix2.tex}
+\include{appendix1.tex}
+\include{appendix2.tex}
 % ------------------------------------------------------------------------------
 \backmatter % 切换到章节不编号但计入目录状态
 % 致谢
-\include{backmatter/acknowledgements.tex}
+\include{acknowledgements.tex}
 % 作者简历及攻读学位期间发表的学术论文与其他相关学术成果
-\include{backmatter/cv.tex}
+\include{cv.tex}
 
 \end{document}
