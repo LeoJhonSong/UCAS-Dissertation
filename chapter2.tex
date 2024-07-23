@@ -35,9 +35,10 @@
 
 \subsection{图片}
 
-比如\autoref{fig:pngtest}. 注意模板中已经默认设置figure及table环境的位置参数为\verb|htbp|, 不能再单独设置.
+比如\autoref{fig:pngtest}. 注意模板中已经默认设置figure及table环境的位置参数为
+\verb|htbp|, 不能再单独设置. 另外在figure及table环境开头插入了\verb|\centering|,
+即已经默认图/表居中.
 \begin{figure}
-    \centering
     \includegraphics[width=0.5\textwidth]{pngtest}
     \bicaption{ucasthesis 图片测试}{ucasthesis figure test}\label{fig:pngtest}
 \end{figure}
@@ -47,7 +48,6 @@
 请见\autoref{tab:sample}。
 \begin{table}
     \bicaption{这是一个样表}{This is a sample table}\label{tab:sample}
-    \centering
     \setlength{\tabcolsep}{4pt}% column separation
     \renewcommand{\arraystretch}{1.2}%row space
     \begin{tabular}{lcccccccc}
