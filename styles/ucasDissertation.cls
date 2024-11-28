@@ -531,6 +531,15 @@
     record, % 显示术语出现的页码
     toc=false, % 不添加到目录
 ]{glossaries-extra}
+
+% 定义新的缩写样式
+\newabbreviationstyle{customstyle}{}{%
+  \renewcommand*{\glsxtrfullformat}[1]{%
+    \glsentrydesc{##1} (\glsxtrlong{##1}, \glsxtrshort{##1})%
+  }%
+}
+\setabbreviationstyle{customstyle}
+
 \makeatletter
 \GlsXtrLoadResources[
     src={\UCAS@sym},
