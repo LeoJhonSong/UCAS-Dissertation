@@ -1,0 +1,54 @@
+{
+	// Place your workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"\\href{}{}": {
+		"scope": "latex",
+		"prefix": "\\href",
+		"body": "\\href{$1}{$2}",
+	},
+	"red text": {
+		"scope": "latex",
+		"prefix": "\\red",
+		"body": "\\textcolor{red}{$1}",
+	},
+	"pdf comment":{
+		"scope": "latex",
+		"prefix": "\\pdfcomment",
+		"body": "\\pdfcomment{$1}",
+	},
+	"figure environment":{
+		"scope": "latex",
+		"prefix": "\\figure",
+		"body": "\\begin{figure}\n\t\\includegraphics[width=\\textwidth]{$1}\n\\bicaption{$2}{$3}\\label{fig:$4}\n\\end{figure}"
+	},
+	"table environment":{
+		"scope": "latex",
+		"prefix": "\\table",
+		"body": [
+			"\\begin{table}",
+			"\t\\bicaption{$1}{$2}\\label{tab:$3}",
+			"\t\\begin{tabularx}{\\textwidth}{cXX}",
+			"\t\t\\toprule",
+			"\t\t$4 & & \\\\\\",
+			"\t\t\\midrule",
+			"\t\t & & \\\\\\",
+			"\t\t\\bottomrule",
+			"\t\\end{tabularx}",
+			"\\end{table}"
+		],
+	},
+}
