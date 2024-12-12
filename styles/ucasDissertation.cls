@@ -488,6 +488,7 @@
 \makeatletter\renewcommand{\ALG@name}{算法}\makeatother
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 7. 其他
+\RequirePackage[perpage]{footmisc} % 每页脚注编号重新开始
 
 % 参考文献 ----------------------------------------------------------------------
 \RequirePackage[
@@ -522,6 +523,7 @@
     pdfstartview = FitH,
     bookmarks = true, % 创建pdf书签
     bookmarksopen = true, % 默认显示书签并展开所有级别
+    bookmarksdepth=4, % 包含到四级标题
     bookmarksnumbered, % 书签名包含编号
 ]{hyperref} % 为了不被其他宏包覆盖hyperref对LaTeX内部命令的修改, 尽可能将hyperref置于导言区最后
 
