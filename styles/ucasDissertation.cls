@@ -100,6 +100,7 @@
 }
 
 \renewcommand{\mainmatter}{
+    \ifUCAS@print\cleardoublepage\else\clearpage\fi
     \@mainmattertrue
     \pagenumbering{arabic} % 切换为阿拉伯数字页码, 由其他数字切换会导致页码重置
     \pagestyle{mainmatter}
@@ -253,6 +254,7 @@
     \newcommand{\UCAS@keywords@en}{#2}
 }
 \newcommand{\makeAbstract}{
+    %这样写是为了这些章节不出现在\tableofcontents命令给出的目录中，但出现在pdf书签目录中
     \currentpdfbookmark{摘要}{摘要} % 添加pdf书签. 前一个参数是书签名, 后一个是内部标识
     \chapter*{
         \markboth{\UCAS@title@cn}{摘\quad 要} % 左右mark都设置为章节名, 使其出现在页眉
@@ -330,6 +332,7 @@
     \ctexset{chapter/break={}} % 下面几个章节不另起一页
     \markboth{\UCAS@title@cn}{图表目录}
     \currentpdfbookmark{图表目录}{图表目录}
+    %防止页眉页脚中的标记被自动更新
     \let\oldmarkboth\@mkboth
     \renewcommand{\@mkboth}[2]{}
 
@@ -338,15 +341,25 @@
     \ifthenelse{\equal{\listAlgorithm}{true}}{\listofalgorithms}{}
     \ifthenelse{\equal{\listCode}{true}}{\listoflistings}{}
 
-    \ctexset{chapter/break=\if@openright\cleardoublepage\else\clearpage\fi}
     \let\@mkboth\oldmarkboth
+    \ctexset{chapter/break=\if@openright\cleardoublepage\else\clearpage\fi}
     \global\let\listofmaterials\relax
 }
 % 改\printunsrtglossary
 \newcommand{\listofnotaions}{
     \currentpdfbookmark{术语表}{术语表}
-    \printunsrtglossary[style = indexgroup, title = {术语表}]
-    \markboth{\UCAS@title@cn}{}
+    \chapter*{
+        \markboth{\UCAS@title@cn}{术语表}
+        术语表
+    }
+    %printunsrtglossary会自动调用\markboth，需要禁止
+    \let\oldmarkboth\@mkboth
+    \renewcommand{\@mkboth}[2]{}
+
+    \printunsrtglossary[type=symbols]
+    \printunsrtglossary[type=abbreviations]
+
+    \let\@mkboth\oldmarkboth
 }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 6. 正文
@@ -420,7 +433,7 @@
 
 % 图 ---------------------------------------------------------------------------
 \RequirePackage{float}
-\floatplacement{figure}{htbp} % 图的默认位置: 优先放在当前位置, 其次放在页面顶部, 再次放在页面底部, 最后放在单独一页
+\floatplacement{figure}{htb} % 图的默认位置: 优先放在当前位置, 其次放在页面顶部, 再次放在页面底部
 \appto\figure{\centering} % 图居中
 \RequirePackage{graphicx}
 \graphicspath{{assets}}
@@ -529,10 +542,14 @@
 
 % 符号说明 (术语表) -----------------------------------------------------------------------
 \RequirePackage[ % 需要放在hyperref后
-    nogroupskip, % 不在每个分组前添加额外的垂直间距
+    nogroupskip, % 不在每个字母组间添加垂直间距
     record, % 显示术语出现的页码
     toc=false, % 不添加到目录
+    nomain, % 不生成不必要的主术语表
+    style=long3col,
 ]{glossaries-extra}
+
+\setglossarysection{section} % 设置术语表标题为章节
 
 % 定义新的缩写样式
 \newabbreviationstyle{customstyle}{}{%
@@ -542,17 +559,13 @@
 }
 \setabbreviationstyle{customstyle}
 
+\newglossary*{abbreviations}{缩写}
+\newglossary*{symbols}{符号}
 \makeatletter
 \GlsXtrLoadResources[
-    src={\UCAS@sym},
-    group={符号}, % set this as the group field
-    category={symbol}, % set this as the category field
+    src={\UCAS@sym,\UCAS@abbr},
+    type={same as base}, % 设置类型为bib文件名
     sort={letter-case}, % sort according to character code
     symbol-sort-fallback={name},
-    break-at={none}
-]
-\GlsXtrLoadResources[
-    src={\UCAS@abbr},
-    group={缩写}
 ]
 \makeatother
