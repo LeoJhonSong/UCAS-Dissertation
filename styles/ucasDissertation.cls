@@ -511,18 +511,32 @@
     style = gb7714-2015, % chktex 8 % biblatex-gb7714-2015宏包提供的顺序编码制
     citestyle = gb7714-2015, % chktex 8
     gbnamefmt=lowercase, % 对于bib文件中的作者姓名的大小写不做改变
-    gbpub=false % 放弃国标的要求, 不使用"出版地不详"等补充信息
+    gbpub=false, % 放弃国标的要求, 不使用"出版地不详"等补充信息
 ]{biblatex}
 \makeatletter
 \addbibresource{\UCAS@ref}
 \makeatother
 
+% 修改\printbibliography页眉样式为和正文一样
+\makeatletter
+\defbibheading{bibintoc}[\bibname]{%
+    \chapter*{%
+        \markboth{\UCAS@title@cn}{#1}%
+        \addcontentsline{toc}{chapter}{#1}%
+        #1%
+    }%
+}
+\makeatother
+
 % 附录 -------------------------------------------------------------------------
 \let\oldappendix\appendix
+\makeatletter
 \renewcommand{\appendix}{
+    \ifUCAS@print\cleardoublepage\else\clearpage\fi
     \oldappendix
     \fancyhead[CO]{\songti\zihao{-5}附\quad 录} % 附录部分页眉为"附录" (没有编号), 两字间空一个汉字符
 }
+\makeatother
 
 % 致谢 -------------------------------------------------------------------------
 \makeatletter
