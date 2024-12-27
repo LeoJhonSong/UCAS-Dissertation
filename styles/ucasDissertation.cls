@@ -18,8 +18,6 @@
     \PassOptionsToClass{draft}{ctexbook}
 }
 \DeclareStringOption{ref}
-\DeclareStringOption{sym}
-\DeclareStringOption{abbr}
 \DeclareDefaultOption{\expandafter\PassOptionsToClass\expandafter{\CurrentOption}{ctexbook}} % 将所有未知选项传递给ctexbook类
 \ProcessKeyvalOptions*\relax % 执行上面为每个选项定义的代码
 
@@ -573,13 +571,6 @@
 }
 \setabbreviationstyle{customstyle}
 
+% 创建两个术语表
 \newglossary*{abbreviations}{缩写}
 \newglossary*{symbols}{符号}
-\makeatletter
-\GlsXtrLoadResources[
-    src={\UCAS@sym,\UCAS@abbr},
-    type={same as base}, % 设置类型为bib文件名
-    sort={letter-case}, % sort according to character code
-    symbol-sort-fallback={name},
-]
-\makeatother

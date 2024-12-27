@@ -1,12 +1,17 @@
 \documentclass[
-    ref=bibs/References.bib,
-    sym=bibs/symbols.bib,
-    abbr=bibs/abbreviations.bib,
+    ref=bibs/references.bib,
     print,
     % draft, % 指定为草稿模式, 会进行简化使生成更快, 在断行不良/溢出出加黑色方块给出提示
 ]{styles/ucasDissertation}
 \addbibresource{bibs/references.bib}
 \graphicspath{{assets}}
+
+\GlsXtrLoadResources[
+    src={bibs/symbols.bib, bibs/abbreviations.bib}, % 这里的文件名对应cls文件中创建的术语表名
+    type={same as base}, % 设置类型为bib文件名
+    sort={letter-case}, % sort according to character code
+    symbol-sort-fallback={name},
+]
 
 \begin{document}
 % ------------------------------------------------------------------------------
