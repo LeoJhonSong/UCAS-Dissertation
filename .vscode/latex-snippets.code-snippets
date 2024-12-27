@@ -33,7 +33,7 @@
 	"figure environment":{
 		"scope": "latex",
 		"prefix": "\\figure",
-		"body": "\\begin{figure}\n\t\\includegraphics[width=\\textwidth]{$1}\n\\bicaption{$2}{$3}\\label{fig:$4}\n\\end{figure}"
+		"body": "\\begin{figure}\n\t\\includegraphics[width=\\textwidth]{$1}\n\t\\bicaption{$2}{$3}\\label{fig:$4}\n\\end{figure}"
 	},
 	"table environment":{
 		"scope": "latex",
