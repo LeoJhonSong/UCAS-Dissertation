@@ -143,13 +143,13 @@
         \vspace{61pt}\par
         \begin{spacing}{2}
             \bfseries
-            \zihao{4}\noindent\begin{tabularx}{\textwidth}{lX}
-                作者姓名: & \expandedUline{\UCAS@author@cn} \\
-                指导教师: & \expandedUline{\UCAS@supervisor@cn} \\
-                         & \expandedUline{\UCAS@supervisor@institute} \\
-                学位类别: & \expandedUline{\UCAS@degreeType@cn} \\
-                学科专业: & \expandedUline{\UCAS@subject@cn} \\
-                培养单位: & \expandedUline{\UCAS@institute@cn} \\
+            \zihao{4}\noindent\begin{tabularx}{\textwidth}{lXp{3.5em}} % 第三列设置成和第一列差不多宽，让第二列能居中
+                作者姓名: & \expandedUline{\UCAS@author@cn} & \\
+                指导教师: & \expandedUline{\UCAS@supervisor@cn} & \\
+                         & \expandedUline{\UCAS@supervisor@institute} & \\
+                学位类别: & \expandedUline{\UCAS@degreeType@cn} & \\
+                学科专业: & \expandedUline{\UCAS@subject@cn} & \\
+                培养单位: & \expandedUline{\UCAS@institute@cn} & \\
             \end{tabularx}\par
             \vspace{72pt}
             \UCAS@date@cn
