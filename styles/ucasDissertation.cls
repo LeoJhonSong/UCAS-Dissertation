@@ -13,6 +13,7 @@
     setkeys=\kvsetkeys,
 }
 \DeclareBoolOption[false]{print} % 印刷版/电子版 (电子版非另页右页, 仅另页), 默认为电子版
+\DeclareBoolOption[false]{colorlinks} % 超链接是否彩色, 默认false时为黑色无边框
 \DeclareVoidOption{draft}{
     \special{xdvipdfmx:config z 0} % 将pdf压缩等级设为0, 缩短生成时间 (但会导致pdf更大)
     \PassOptionsToClass{draft}{ctexbook}
@@ -544,14 +545,21 @@
 
 % 超链接, pdf元信息及pdf书签 ----------------------------------------------------
 \RequirePackage[
-    colorlinks = true,
-    % linkcolor=blue,anchorcolor=violet,citecolor=magenta
+    colorlinks,
+    linkcolor=RoyalBlue,anchorcolor=black,citecolor=green,urlcolor=orange,
     pdfstartview = FitH,
     bookmarks = true, % 创建pdf书签
     bookmarksopen = true, % 默认显示书签并展开所有级别
     bookmarksdepth=4, % 包含到四级标题
     bookmarksnumbered, % 书签名包含编号
 ]{hyperref} % 为了不被其他宏包覆盖hyperref对LaTeX内部命令的修改, 尽可能将hyperref置于导言区最后
+\makeatletter
+\ifUCAS@colorlinks
+  %
+\else
+  \hypersetup{hidelinks}  % 隐藏链接颜色和框
+\fi
+\makeatother
 
 % 符号说明 (术语表) -----------------------------------------------------------------------
 \RequirePackage[ % 需要放在hyperref后
