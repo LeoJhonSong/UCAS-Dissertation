@@ -153,7 +153,7 @@
                 培养单位: & \expandedUline{\UCAS@institute@cn} & \\
             \end{tabularx}\par
             \vspace{72pt}
-            \UCAS@date@cn
+            \UCAS@gradYear 年\UCAS@gradMonth@cn 月
         \end{spacing}
     \end{center}
 }
@@ -181,7 +181,7 @@
             Supervisor:\quad\UCAS@supervisor@en\\
             \vspace{73pt}
             \UCAS@institute@en\\
-            \UCAS@date@en
+            \UCAS@gradMonth@en~\UCAS@gradYear
         \end{spacing}
     \end{center}
 }

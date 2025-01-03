@@ -32,6 +32,7 @@
     \newcommand{\UCAS@supervisor@en}{#2}
     \newcommand{\UCAS@supervisor@institute}{#3}
 }
+\newcommand{\gradYear}[1]{\newcommand{\UCAS@gradYear}{#1}}
 
 \newcommand{\setterFactory}[1]{
     \expandafter\edef\csname #1\endcsname##1##2{
@@ -39,4 +40,4 @@
         \expandafter\def\csname UCAS@#1@en\endcsname{##2}
     }
 }
-\forcsvlist{\setterFactory}{title, author, degreeType, subject, institute, date} % 定义\title, \author等命令
+\forcsvlist{\setterFactory}{title, author, degreeType, subject, institute, gradMonth} % 定义\title, \author等命令
