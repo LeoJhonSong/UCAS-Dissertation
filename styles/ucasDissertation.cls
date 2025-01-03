@@ -510,6 +510,7 @@
     citestyle = gb7714-2015, % chktex 8
     gbnamefmt=lowercase, % 对于bib文件中的作者姓名的大小写不做改变
     gbpub=false, % 放弃国标的要求, 不使用"出版地不详"等补充信息
+    doi=false, % 不显示DOI
 ]{biblatex}
 \makeatletter
 \addbibresource{\UCAS@ref}
