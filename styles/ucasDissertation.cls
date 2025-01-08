@@ -538,11 +538,6 @@
 }
 \makeatother
 
-% 致谢 -------------------------------------------------------------------------
-\makeatletter
-\newcommand{\acknowledgementsDate}{\par\noindent\hspace{24\ccwd}\UCAS@date@cn}
-\makeatother
-
 % 超链接, pdf元信息及pdf书签 ----------------------------------------------------
 \RequirePackage[
     colorlinks,
