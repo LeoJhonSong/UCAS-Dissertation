@@ -37,6 +37,8 @@
 ]{ctexbook}
 
 % 汉化
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
 \ctexset{
     contentsname = {目\quad 录},
     listfigurename = {图目录},
