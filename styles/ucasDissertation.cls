@@ -13,7 +13,8 @@
     setkeys=\kvsetkeys,
 }
 \DeclareBoolOption[false]{print} % 印刷版/电子版 (电子版非另页右页, 仅另页), 默认为电子版
-\DeclareBoolOption[false]{colorlinks} % 超链接是否彩色, 默认false时为黑色无边框
+\DeclareBoolOption[false]{colorlinks} % 超链接是否彩色, 默认false, 此时为黑色无边框
+\DeclareBoolOption[false]{bibBackref} % 是否在参考文献列表中显示文献引用页, 默认false, 此时为不显示
 \DeclareVoidOption{draft}{
     \special{xdvipdfmx:config z 0} % 将pdf压缩等级设为0, 缩短生成时间 (但会导致pdf更大)
     \PassOptionsToClass{draft}{ctexbook}
@@ -504,9 +505,16 @@
 \RequirePackage[perpage]{footmisc} % 每页脚注编号重新开始
 
 % 参考文献 ----------------------------------------------------------------------
+\makeatletter
+\ifUCAS@bibBackref
+  \PassOptionsToPackage{backref=true}{biblatex} % 在参考文献列表中显示文献引用页
+\else
+  \PassOptionsToPackage{backref=false}{biblatex}
+\fi
+\makeatother
+
 \RequirePackage[
     backend = biber,
-    backref = true,
     maxbibnames = 3,
     style = gb7714-2015, % chktex 8 % biblatex-gb7714-2015宏包提供的顺序编码制
     citestyle = gb7714-2015, % chktex 8
