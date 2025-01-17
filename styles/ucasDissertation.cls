@@ -476,12 +476,13 @@
 \RequirePackage[list=off]{bicaption} % 图表目录中仅显示第一语言的标题
 \captionsetup{
     labelsep=quad, % 图/表序与图/表题文字之间空一个汉字符
-    skip=0pt,
+    skip=0pt, % 题注与上文及下文的距离 (其实是设置与下文间距为0)
+    aboveskip=0.5em, % 题注与上文的距离
 }
 \DeclareCaptionFormat{cn}{\vspace{6pt}\songti\zihao{5}\bfseries\linespread{1.25}#1#2#3\par} % 中文图/表题样式: 宋体五号加粗1.25倍行距, 段前6pt段后0pt
 \DeclareCaptionFormat{en}{\zihao{5}\bfseries\linespread{1.25}#1#2#3\vspace{12pt}\par} % 英文图/表题样式: Times New Roman五号加粗1.25倍行距, 段前6pt段后0pt
-\captionsetup[bi-first]{format=cn}
-\captionsetup[bi-second]{format=en}
+\captionsetup[bi-first]{format=cn, justification=centering, singlelinecheck=true}
+\captionsetup[bi-second]{format=en, justification=centering, singlelinecheck=true}
 \captionsetup[figure][bi-first]{name={图}}
 \captionsetup[table][bi-first]{name={表}}
 \captionsetup[listing][bi-first]{name={代码}}
@@ -540,7 +541,7 @@
 
 % 致谢 -------------------------------------------------------------------------
 \makeatletter
-\newcommand{\acknowledgementsDate}{\par\noindent\hspace{24\ccwd}\UCAS@date@cn}
+\newcommand{\acknowledgementsDate}{\par\noindent\hspace{24\ccwd}\UCAS@gradYear 年\UCAS@gradMonth@cn 月}
 \makeatother
 
 % 超链接, pdf元信息及pdf书签 ----------------------------------------------------
