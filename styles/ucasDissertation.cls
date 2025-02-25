@@ -441,7 +441,7 @@
 
 % 表 ---------------------------------------------------------------------------
 \floatplacement{table}{htbp}
-\appto\table{\centering} % 表居中
+\appto\table{\centering\zihao{5}} % 表居中, 表格内字体五号
 % 行间距1.5倍 (得自word模板实现)
 % TODO: 卧排表顶左底右, 即表顶朝左
 \RequirePackage{tabularx}
@@ -452,6 +452,7 @@
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 \RequirePackage{unicode-math}
+\everydisplay{\zihao{5}} % 显示公式的表达式及右侧编号为五号Times New Roman
 
 % 算法环境 ---------------------------------------------------------------------
 \RequirePackage{algorithm}
