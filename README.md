@@ -39,7 +39,21 @@
 
 ### 在线编辑
 
-将压缩包上传Overleaf或[中国科技云Overleaf](https://www.cstcloud.cn/resources/452) (无编译时间限制) 后在菜单中需将编译器选为`xelatex`
+将压缩包上传Overleaf或[中国科技云Overleaf](https://www.cstcloud.cn/resources/452) (无编译时间限制) 后在菜单中需将编译器选为`xelatex`. 打开Thesis.tex并编译可以生成论文pdf, 打开spine.tex并编译可以生成书脊pdf. 由于overleaf/科技云会覆盖`.latexmkrc`中设置的latexmk规则, 输出文件夹被覆写为根目录, 因此想要正常编译**需要做两点修改**:
+1. 在行首加`#`, 注释[.latexmkrc](./.latexmkrc)中`$xelatex=`开头的行
+   ```diff
+   - xelatex = 'xelatex -synctex=1 -interaction=nonstopmode -file-line-error -shell-escape -output-directory=%0 %S';
+   + #xelatex = 'xelatex -synctex=1 -interaction=nonstopmode -file-line-error -shell-escape -output-directory=%0 %S';
+   ```
+2. [styles/ucasDissertation.cls](./styles/ucasDissertation.cls)第464行minted包`outputdir`选项的值改为`./`
+   ```diff
+   \RequirePackage[
+   -    outputdir=build,
+   +    outputdir=./,
+       cachedir=minted_cache,
+       newfloat,
+   ]{minted}
+   ```
 
 ### 本地编辑
 
