@@ -19,7 +19,6 @@
     \special{xdvipdfmx:config z 0} % 将pdf压缩等级设为0, 缩短生成时间 (但会导致pdf更大)
     \PassOptionsToClass{draft}{ctexbook}
 }
-\DeclareStringOption{ref}
 \DeclareDefaultOption{\expandafter\PassOptionsToClass\expandafter{\CurrentOption}{ctexbook}} % 将所有未知选项传递给ctexbook类
 \ProcessKeyvalOptions*\relax % 执行上面为每个选项定义的代码
 
@@ -524,9 +523,6 @@
     doi=false, % 不显示DOI
     defernumbers=true, % 以允许\printbibliography{}的resetnumbers=true选项
 ]{biblatex}
-\makeatletter
-\addbibresource{\UCAS@ref}
-\makeatother
 
 % 修改\printbibliography页眉样式为和正文一样
 \makeatletter
@@ -551,7 +547,7 @@
 
 % 致谢 -------------------------------------------------------------------------
 \makeatletter
-\newcommand{\acknowledgementsDate}{\par\noindent\hspace{24\ccwd}\UCAS@gradYear 年\UCAS@gradMonth@cn 月}
+\newcommand{\acknowledgementsDate}{\begin{flushright}\UCAS@gradYear 年\UCAS@gradMonth@cn 月\end{flushright}}
 \makeatother
 
 % 超链接, pdf元信息及pdf书签 ----------------------------------------------------
