@@ -9,6 +9,7 @@
 ├── 📁assets                       图片/附件代码等资产放这里, 如果文件较多建议进一步按章节分为多个文件夹
 ├── 📁bibs
 │   ├── 📒abbreviations.bib        术语表的缩写类术语定义
+│   └── 📒mywork.bib               用于“作者简历及攻读学位期间发表的学术论文与其他相关学术成果”章节 (cv.tex) 的个人学术论文及专利的bibtex/biblatex
 │   ├── 📒references.bib           参考文献的bibtex/biblatex都放这里
 │   └── 📒symbols.bib              术语表的数学符号类术语定义
 ├── 📦build                        编译出的文件在这个目录, 比如编译出的pdf文件`Thesis.pdf`

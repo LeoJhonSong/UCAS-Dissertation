@@ -522,6 +522,7 @@
     gbnamefmt=lowercase, % 对于bib文件中的作者姓名的大小写不做改变
     gbpub=false, % 放弃国标的要求, 不使用"出版地不详"等补充信息
     doi=false, % 不显示DOI
+    defernumbers=true, % 以允许\printbibliography{}的resetnumbers=true选项
 ]{biblatex}
 \makeatletter
 \addbibresource{\UCAS@ref}
