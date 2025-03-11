@@ -270,7 +270,7 @@
     }
     \UCAS@abstract@en\par
     \vspace{\baselineskip}\par
-    \noindent\textbf{Keywords:}\ \UCAS@keywords@en
+    \noindent\textbf{Key Words:}\ \UCAS@keywords@en
 
     \global\let\makeAbstract\relax % 销毁该命令, 防止重复调用
 }
@@ -425,8 +425,10 @@
 \renewcommand{\labelitemiv}{\(\circ\)}
 % 设置有序/无序列表的标签左对齐, 与正文一致
 \RequirePackage{enumitem}
-\setlist[enumerate]{leftmargin=3\ccwd}
-\setlist[itemize]{leftmargin=3\ccwd}
+% 有序列表列表项首行缩进4字符（使序号大致缩进2字符），后续行无缩进，序号与列表项间无间隔，序号样式为（1）
+\setlist[enumerate]{itemindent=4\ccwd, leftmargin=0pt, labelsep=0pt, label=（\arabic*）}
+% 无序列表列表项首行缩进3字符，后续行无缩进，标签与列表项间3字符（使圆点大致处于左边界起第3字符的中间），标签样式为实心圆
+\setlist[itemize]{itemindent=3\ccwd, leftmargin=0pt, labelsep=3pt}
 % 列表上下及列表项间无额外间距
 \setlist{nosep}
 
