@@ -253,6 +253,7 @@
     \newcommand{\UCAS@keywords@en}{#2}
 }
 \newcommand{\makeAbstract}{
+    \ifUCAS@print\cleardoublepage\else\clearpage\fi
     %这样写是为了这些章节不出现在\tableofcontents命令给出的目录中，但出现在pdf书签目录中
     \currentpdfbookmark{摘要}{摘要} % 添加pdf书签. 前一个参数是书签名, 后一个是内部标识
     \chapter*{
@@ -263,6 +264,7 @@
     \vspace{\baselineskip}\par % 关键词与摘要间空一行
     \noindent\textbf{关键词:}\ \UCAS@keywords@cn
 
+    \ifUCAS@print\cleardoublepage\else\clearpage\fi
     \currentpdfbookmark{Abstract}{Abstract}
     \chapter*{
         \markboth{\UCAS@title@en}{Abstract}
@@ -346,6 +348,7 @@
 }
 % 改\printunsrtglossary
 \newcommand{\listofnotaions}{
+    \ifUCAS@print\cleardoublepage\else\clearpage\fi
     \currentpdfbookmark{术语表}{术语表}
     \chapter*{
         \markboth{\UCAS@title@cn}{术语表}
@@ -484,8 +487,8 @@
 }
 \DeclareCaptionFormat{cn}{\vspace{6pt}\songti\zihao{5}\bfseries\linespread{1.25}#1#2#3\par} % 中文图/表题样式: 宋体五号加粗1.25倍行距, 段前6pt段后0pt
 \DeclareCaptionFormat{en}{\zihao{5}\bfseries\linespread{1.25}#1#2#3\vspace{12pt}\par} % 英文图/表题样式: Times New Roman五号加粗1.25倍行距, 段前6pt段后0pt
-\captionsetup[bi-first]{format=cn, justification=centering, singlelinecheck=true}
-\captionsetup[bi-second]{format=en, justification=centering, singlelinecheck=true}
+\captionsetup[bi-first]{format=cn, justification=raggedright, singlelinecheck=true}
+\captionsetup[bi-second]{format=en, justification=raggedright, singlelinecheck=true}
 \captionsetup[figure][bi-first]{name={图}}
 \captionsetup[table][bi-first]{name={表}}
 \captionsetup[listing][bi-first]{name={代码}}
