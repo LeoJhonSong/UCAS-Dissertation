@@ -33,14 +33,17 @@
 
 项目大致文件结构如上. 论文写作流程:
 
-1. 在`info.tex`中填写论文信息 (论文标题如果还没想好可以之后再填)
-2. 写正文章节, 根据需要在**根目录**增加`chapterN.tex`, 并在`Thesis.tex`中`\include{chapter1.tex}`下方增加一行`\include{chapterN.tex}`. 附录章节操作是类似的.
+1. 开始你自己的写作前建议先编译出本模板pdf, 确认输出与[Thesis.pdf](./Thesis.pdf)一致, 以确保你已经配置完善$\LaTeX$写作环境. 另外也建议**参考模板pdf第二章对各类内容的推荐写法**.
+2. 在`info.tex`中填写论文信息 (论文标题如果还没想好可以之后再填)
+3. 写正文章节, 根据需要在**根目录**增加`chapterN.tex`, 并在`Thesis.tex`中`\include{chapter1.tex}`下方增加一行`\include{chapterN.tex}`. 附录章节操作是类似的.
 
    > ⚠️ 如果你不是对LaTeX非常熟悉并且已经完全理解本模板, 不建议更改文件结构, 否则可能导致编译失败或部分功能缺失.
    >
    > 比如由于指定了latexmk的`out_dir`为build文件夹, 目前`.latexmkrc`中设置的bib2gls规则仅能正确处理根目录下.tex文件中的`\gls{}`命令.
-3. 填写摘要, 致谢, 简历等章节
-4. 书脊pdf不需要编辑, 只需要生成
+4. 填写摘要, 致谢, 简历等章节
+5. 书脊pdf不需要编辑, 只需要生成
+6. 生成查重版pdf：注释`Thesis.tex`中的`\makeCover`, `\makeDeclaration`, 注释插入`abstract.tex`, `acknowledgements.tex`, `cv.tex`的行, 注释显示图表目录和参考文献列表的行,并重新生成
+7. 生成盲审版pdf：将`info.tex`中需要隐去的信息都以`-`代替并重新生成即可
 
 ## 编译方式
 

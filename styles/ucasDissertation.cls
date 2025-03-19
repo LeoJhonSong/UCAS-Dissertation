@@ -298,7 +298,17 @@
 \setlength{\cftbeforesubsecskip}{6pt}
 \renewcommand{\cftsubsecfont}{\heiti\zihao{-4}\linespread{1.0}} % 黑体小四号单倍行距
 \renewcommand{\cftsubsecindent}{2\ccwd}
-% 图表目录
+% 图/表/算法/代码目录
+
+% 使设置\listoffigures样式的命令也能设置\listofalgorithms样式
+% 见: https://tex.stackexchange.com/a/186135
+\RequirePackage{algorithm}
+\RequirePackage{etoolbox}
+\patchcmd{\listof}% <cmd>
+{\float@listhead}% <search>
+{\@namedef{l@#1}{\l@figure}\float@listhead}% <replace>
+{}{}% <success><failure>
+
 \setlength{\cftbeforefigskip}{6pt}
 \setlength{\cftbeforetabskip}{6pt}
 \renewcommand{\cftfigfont}{\heiti\zihao{4}\linespread{1.0}} % 黑体四号单倍行距
@@ -438,13 +448,16 @@
 % 图 ---------------------------------------------------------------------------
 \RequirePackage{float}
 \floatplacement{figure}{htb} % 图的默认位置: 优先放在当前位置, 其次放在页面顶部, 再次放在页面底部
-\appto\figure{\centering} % 图居中
+\appto\figure{\centering\zihao{5}} % 图居中
 \RequirePackage{graphicx}
 \graphicspath{{assets}}
 \RequirePackage{subcaption} % 提供子图环境subfigure
 
+% tikz绘图
+\RequirePackage{tikz}
+
 % 表 ---------------------------------------------------------------------------
-\floatplacement{table}{htbp}
+\floatplacement{table}{htb}
 \appto\table{\centering\zihao{5}} % 表居中, 表格内字体五号
 % 行间距1.5倍 (得自word模板实现)
 % TODO: 卧排表顶左底右, 即表顶朝左
@@ -457,10 +470,30 @@
 \RequirePackage{amssymb}
 \RequirePackage{unicode-math}
 \everydisplay{\zihao{5}} % 显示公式的表达式及右侧编号为五号Times New Roman
+\usepackage{gensymb} % 提供一些科学和数学中常用的通用符号，如单位符号
 
 % 算法环境 ---------------------------------------------------------------------
-\RequirePackage{algorithm}
-\RequirePackage{algorithmic}
+\RequirePackage{algpseudocode}
+\renewcommand{\algorithmicrequire}{\textbf{输入：}}
+\renewcommand{\algorithmicensure}{\textbf{输出：}}
+\renewcommand{\algorithmicif}{\textbf{如果}}
+\renewcommand{\algorithmicthen}{\textbf{则}}
+\renewcommand{\algorithmicelse}{\textbf{否则}}
+\renewcommand{\algorithmicfor}{\textbf{对于}}
+\renewcommand{\algorithmicforall}{\textbf{对于所有}}
+\renewcommand{\algorithmicdo}{\textbf{执行}}
+\renewcommand{\algorithmicwhile}{\textbf{当}}
+\renewcommand{\algorithmicloop}{\textbf{循环}}
+\renewcommand{\algorithmicrepeat}{\textbf{重复}}
+\renewcommand{\algorithmicuntil}{\textbf{直到}}
+\renewcommand{\algorithmicreturn}{\textbf{返回}}
+\renewcommand{\algorithmicend}{\textbf{结束}}
+\renewcommand{\algorithmicprocedure}{\textbf{过程}}
+\renewcommand{\algorithmicfunction}{\textbf{函数}}
+% algorithmicx自带的拼接end与xx的方式给出的汉化不好看，直接更改结束命令显示文本
+\algrenewtext{EndIf}{\textbf{结束如果}}
+\algrenewtext{EndFor}{\textbf{结束循环}}
+\algrenewtext{EndWhile}{\textbf{结束循环}}
 
 % 代码环境 ---------------------------------------------------------------------
 \RequirePackage[svgnames]{xcolor}
@@ -504,19 +537,17 @@
 \newcommand{\equationautorefname}{公式}
 \renewcommand{\listingautorefname}{代码}
 \newcommand{\algorithmautorefname}{算法}
-\makeatletter\renewcommand{\ALG@name}{算法}\makeatother
+\renewcommand{\ALG@name}{算法}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 7. 其他
 \RequirePackage[perpage]{footmisc} % 每页脚注编号重新开始
 
 % 参考文献 ----------------------------------------------------------------------
-\makeatletter
 \ifUCAS@bibBackref
   \PassOptionsToPackage{backref=true}{biblatex} % 在参考文献列表中显示文献引用页
 \else
   \PassOptionsToPackage{backref=false}{biblatex}
 \fi
-\makeatother
 
 \RequirePackage[
     backend = biber,
@@ -530,7 +561,6 @@
 ]{biblatex}
 
 % 修改\printbibliography页眉样式为和正文一样
-\makeatletter
 \defbibheading{bibintoc}[\bibname]{%
     \chapter*{%
         \markboth{\UCAS@title@cn}{#1}%
@@ -538,22 +568,17 @@
         #1%
     }%
 }
-\makeatother
 
 % 附录 -------------------------------------------------------------------------
 \let\oldappendix\appendix
-\makeatletter
 \renewcommand{\appendix}{
     \ifUCAS@print\cleardoublepage\else\clearpage\fi
     \oldappendix
     \fancyhead[CO]{\songti\zihao{-5}附\quad 录} % 附录部分页眉为"附录" (没有编号), 两字间空一个汉字符
 }
-\makeatother
 
 % 致谢 -------------------------------------------------------------------------
-\makeatletter
 \newcommand{\acknowledgementsDate}{\begin{flushright}\UCAS@gradYear 年\UCAS@gradMonth@cn 月\end{flushright}}
-\makeatother
 
 % 超链接, pdf元信息及pdf书签 ----------------------------------------------------
 \RequirePackage[
@@ -565,13 +590,11 @@
     bookmarksdepth=4, % 包含到四级标题
     bookmarksnumbered, % 书签名包含编号
 ]{hyperref} % 为了不被其他宏包覆盖hyperref对LaTeX内部命令的修改, 尽可能将hyperref置于导言区最后
-\makeatletter
 \ifUCAS@colorlinks
   %
 \else
   \hypersetup{hidelinks}  % 隐藏链接颜色和框
 \fi
-\makeatother
 
 % 符号说明 (术语表) -----------------------------------------------------------------------
 \RequirePackage[ % 需要放在hyperref后
