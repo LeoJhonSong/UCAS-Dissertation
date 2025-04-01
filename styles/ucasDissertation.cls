@@ -498,7 +498,6 @@
 % 代码环境 ---------------------------------------------------------------------
 \RequirePackage[svgnames]{xcolor}
 \RequirePackage[
-    outputdir=build,
     cachedir=minted_cache,
     newfloat,
 ]{minted}
